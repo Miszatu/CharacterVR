@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-/* VR Includes */
+// VR Includes 
 #include "HeadMountedDisplay.h"
 #include "MotionControllerComponent.h"
 

@@ -2,11 +2,18 @@
 
 #include "VRGameMode.h"
 #include "VRCharacter.h"
+#include "ConstructorHelpers.h"
 #include "UObject/ConstructorHelpers.h"
 
 AVRGameMode::AVRGameMode(const FObjectInitializer& ObjectInitializer) : Super()
 {
-	DefaultPawnClass = AVRCharacter::StaticClass();
+	// set default pawn class to our Blueprinted character
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnObject(TEXT("Class'/Script/CharacterVR.VRCharacter'"));
+
+	if (PlayerPawnObject.Class != NULL)
+	{
+		DefaultPawnClass = PlayerPawnObject.Class;
+	}
 }
 
 void AVRGameMode::StartPlay()
