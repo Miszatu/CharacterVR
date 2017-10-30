@@ -30,6 +30,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	// Controls
 	//handles moving forward/backward
 	UFUNCTION()
 		void MoveForward(float Val);
@@ -42,4 +43,14 @@ public:
 	//clears jump flag when key is released
 	UFUNCTION()
 		void OnStopJump();
+
+	//// MotionController Controls
+	//UFUNCTION()
+	//	virtual void MotionControlLeftTriggerPressed();
+	//UFUNCTION()
+	//	virtual void MotionControlLeftTriggerReleased();
+	//UFUNCTION()
+	//	virtual void MotionControlRightTriggerPressed();
+	//UFUNCTION()
+	//	virtual void MotionControlRightTriggerReleased();
 };

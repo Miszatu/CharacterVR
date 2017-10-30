@@ -36,6 +36,10 @@ void AVRCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis("LookUp", this, &AVRCharacter::AddControllerPitchInput);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AVRCharacter::OnStartJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AVRCharacter::OnStopJump);
+	//PlayerInputComponent->BindAction("MoveForward", IE_Pressed, this, &AVRCharacter::MotionControlLeftTriggerPressed);
+	//PlayerInputComponent->BindAction("MoveForward", IE_Released, this, &AVRCharacter::MotionControlLeftTriggerReleased);
+
+
 }
 
 void AVRCharacter::MoveForward(float Value)
@@ -75,3 +79,27 @@ void AVRCharacter::OnStopJump()
 {
 	bPressedJump = false;
 }
+//
+//// Left Trigger Press
+//void AVRCharacter::MotionControlLeftTriggerPressed()
+//{
+//	UE_LOG(LogTemp, Warning, TEXT("Left trigger is PRESSED"));
+//}
+//
+//// Left Trigger Release
+//void AVRCharacter::MotionControlLeftTriggerReleased()
+//{
+//	UE_LOG(LogTemp, Warning, TEXT("Left trigger is RELEASED"));
+//}
+//
+//// Right Trigger Press
+//void AVRCharacter::MotionControlRightTriggerPressed()
+//{
+//	UE_LOG(LogTemp, Warning, TEXT("Right trigger is PRESSED"));
+//}
+//
+//// Right Trigger Release
+//void AVRCharacter::MotionControlRightTriggerReleased()
+//{
+//	UE_LOG(LogTemp, Warning, TEXT("Right trigger is RELEASED"));
+//}
