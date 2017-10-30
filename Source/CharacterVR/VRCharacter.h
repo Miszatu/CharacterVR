@@ -4,6 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+/* VR Includes */
+#include "HeadMountedDisplay.h"
+#include "MotionControllerComponent.h"
+
 #include "VRCharacter.generated.h"
 
 UCLASS()
