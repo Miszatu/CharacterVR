@@ -4,9 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-// VR Includes 
-#include "HeadMountedDisplay.h"
-#include "MotionControllerComponent.h"
+#include "Camera/CameraComponent.h"
 
 #include "VRCharacter.generated.h"
 
@@ -22,6 +20,26 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+protected:
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UCameraComponent* CameraComp;
+
+	/* Component to specify origin for the HMD */
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		USceneComponent* VROriginComp;
+
+	UPROPERTY(EditDefaultsOnly, Category = "VR")
+		bool bPositionalHeadTracking;
+
+	/* Motion Controllers */
+
+	UPROPERTY(EditDefaultsOnly, Category = "Components")
+		class UMotionControllerComponent* LeftHandComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Components")
+		class UMotionControllerComponent* RightHandComponent;
 
 public:	
 	// Called every frame
@@ -44,13 +62,11 @@ public:
 	UFUNCTION()
 		void OnStopJump();
 
-	//// MotionController Controls
+	//// Resets HMD Origin position and orientation 
 	//UFUNCTION()
-	//	virtual void MotionControlLeftTriggerPressed();
+	//void ResetHMDOrigin();
+
+	//// Toggle between Seated and Standing VR Tracking 
 	//UFUNCTION()
-	//	virtual void MotionControlLeftTriggerReleased();
-	//UFUNCTION()
-	//	virtual void MotionControlRightTriggerPressed();
-	//UFUNCTION()
-	//	virtual void MotionControlRightTriggerReleased();
+	//void ToggleTrackingSpace();
 };

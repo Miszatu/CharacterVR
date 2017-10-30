@@ -1,14 +1,35 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "VRCharacter.h"
+#include "CharacterVR.h"
+/* VR Includes */
+#include "HeadMountedDisplay.h"
+#include "MotionControllerComponent.h"
+
+
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AVRCharacter::AVRCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
 
+	VROriginComp = CreateDefaultSubobject<USceneComponent>(TEXT("VRCameraOrigin"));
+	VROriginComp->AttachTo(RootComponent);
+	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	/* Assign to the VR origin component so any reset calls to the HMD can reset to 0,0,0 relative to this component */
+	CameraComp->AttachTo(VROriginComp);
+
+	LeftHandComponent = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("LeftHand"));
+	LeftHandComponent->Hand = EControllerHand::Left;
+	LeftHandComponent->AttachTo(VROriginComp);
+
+	RightHandComponent = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("RightHand"));
+	RightHandComponent->Hand = EControllerHand::Right;
+	RightHandComponent->AttachTo(VROriginComp);
+
+	bPositionalHeadTracking = false;
 }
 
 // Called when the game starts or when spawned
@@ -36,8 +57,8 @@ void AVRCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis("LookUp", this, &AVRCharacter::AddControllerPitchInput);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AVRCharacter::OnStartJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AVRCharacter::OnStopJump);
-	//PlayerInputComponent->BindAction("MoveForward", IE_Pressed, this, &AVRCharacter::MotionControlLeftTriggerPressed);
-	//PlayerInputComponent->BindAction("MoveForward", IE_Released, this, &AVRCharacter::MotionControlLeftTriggerReleased);
+
+//	PlayerInputComponent->BindAction("ResetHMDOrigin", IE_Pressed, this, &AVRCharacter::ResetHMDOrigin);
 
 
 }
@@ -79,27 +100,14 @@ void AVRCharacter::OnStopJump()
 {
 	bPressedJump = false;
 }
-//
-//// Left Trigger Press
-//void AVRCharacter::MotionControlLeftTriggerPressed()
+
+
+
+//void AVRCharacter::ResetHMDOrigin()
 //{
-//	UE_LOG(LogTemp, Warning, TEXT("Left trigger is PRESSED"));
-//}
-//
-//// Left Trigger Release
-//void AVRCharacter::MotionControlLeftTriggerReleased()
-//{
-//	UE_LOG(LogTemp, Warning, TEXT("Left trigger is RELEASED"));
-//}
-//
-//// Right Trigger Press
-//void AVRCharacter::MotionControlRightTriggerPressed()
-//{
-//	UE_LOG(LogTemp, Warning, TEXT("Right trigger is PRESSED"));
-//}
-//
-//// Right Trigger Release
-//void AVRCharacter::MotionControlRightTriggerReleased()
-//{
-//	UE_LOG(LogTemp, Warning, TEXT("Right trigger is RELEASED"));
+//	IHeadMountedDisplay* HMD = (IHeadMountedDisplay*)(GEngine->HMDDevice.Get());
+//	if (HMD && HMD->IsStereoEnabled())
+//	{
+//		HMD->ResetOrientationAndPosition();
+//	}
 //}
