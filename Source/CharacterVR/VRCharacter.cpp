@@ -1,9 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "VRCharacter.h"
+
 #include "CharacterVR.h"
 /* VR Includes */
-#include "HeadMountedDisplay.h"
+#include "HeadMountedDisplayFunctionLibrary.h"
 #include "MotionControllerComponent.h"
 
 
