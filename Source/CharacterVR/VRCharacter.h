@@ -34,7 +34,10 @@ protected:
 		bool bPositionalHeadTracking;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-		class USkeletalMeshComponent* Mesh1P;
+		class USkeletalMeshComponent* R_Hand;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+		class USkeletalMeshComponent* L_Hand;
 
 	/* Motion Controllers */
 
@@ -65,6 +68,8 @@ public:
 	UFUNCTION()
 		void OnStopJump();
 
+	FVector LeftPos;
+	FVector RightPos;
 	// Resets HMD Origin position and orientation 
 	//UFUNCTION()
 	//void ResetHMDOrigin();

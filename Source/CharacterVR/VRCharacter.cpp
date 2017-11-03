@@ -14,25 +14,35 @@ AVRCharacter::AVRCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	VROriginComp = CreateDefaultSubobject<USceneComponent>(TEXT("VRCameraOrigin"));
-	VROriginComp->AttachTo(RootComponent);
+	VROriginComp->SetupAttachment(RootComponent);
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	/* Assign to the VR origin component so any reset calls to the HMD can reset to 0,0,0 relative to this component */
-	CameraComp->AttachTo(VROriginComp);
-
-
-	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
-	Mesh1P->SetOnlyOwnerSee(true);
-	Mesh1P->SetupAttachment(VROriginComp);
-	Mesh1P->RelativeRotation = FRotator(1.9f, -19.19f, 5.2f);
-	Mesh1P->RelativeLocation = FVector(-0.5f, -4.4f, -155.7f);
+	CameraComp->SetupAttachment(VROriginComp);
 
 	LeftHandComponent = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("LeftHand"));
 	LeftHandComponent->Hand = EControllerHand::Left;
-	LeftHandComponent->AttachTo(VROriginComp);
+	LeftHandComponent->Activate(true);
+	LeftHandComponent->SetupAttachment(VROriginComp);
+
+	L_Hand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("L_Hand"));
+	L_Hand->SetOnlyOwnerSee(true);
+	L_Hand->SetupAttachment(LeftHandComponent);
+	L_Hand->RelativeRotation = FRotator(0.0f, 0.0f, -90.0f);
+	L_Hand->RelativeScale3D = FVector(1.0f, -1.0f, 1.0f);
+	L_Hand->RelativeLocation = FVector(20.0f, 0.0f, 0.0f);
 
 	RightHandComponent = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("RightHand"));
 	RightHandComponent->Hand = EControllerHand::Right;
-	RightHandComponent->AttachTo(VROriginComp);
+	RightHandComponent->Activate(true);
+	RightHandComponent->SetupAttachment(VROriginComp);
+
+	R_Hand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("R_Hand"));
+	R_Hand->SetOnlyOwnerSee(true);
+	R_Hand->SetupAttachment(RightHandComponent);
+	R_Hand->RelativeRotation = FRotator(0.0f, 0.0f, 90.0f);
+	R_Hand->RelativeLocation = FVector(20.0f, 0.0f, 0.0f);
+	FVector LeftPos = L_Hand->GetComponentLocation();
+	FVector RightPos = R_Hand->GetComponentLocation();
 
 	bPositionalHeadTracking = false;
 }
@@ -41,14 +51,14 @@ AVRCharacter::AVRCharacter()
 void AVRCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	Mesh1P->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 }
 
 // Called every frame
 void AVRCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	UE_LOG(LogTemp, Log, TEXT("Left Position is %s"), *LeftPos.ToString());
+	UE_LOG(LogTemp, Log, TEXT("Right Position is %s"), *RightPos.ToString());
 }
 
 // Called to bind functionality to input
