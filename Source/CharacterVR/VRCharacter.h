@@ -33,6 +33,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "VR")
 		bool bPositionalHeadTracking;
 
+	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+		class USkeletalMeshComponent* Mesh1P;
+
 	/* Motion Controllers */
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
@@ -62,7 +65,7 @@ public:
 	UFUNCTION()
 		void OnStopJump();
 
-	//// Resets HMD Origin position and orientation 
+	// Resets HMD Origin position and orientation 
 	//UFUNCTION()
 	//void ResetHMDOrigin();
 

@@ -1,13 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "VRCharacter.h"
-
 #include "CharacterVR.h"
 /* VR Includes */
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "MotionControllerComponent.h"
-
-
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
@@ -21,6 +18,13 @@ AVRCharacter::AVRCharacter()
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 	/* Assign to the VR origin component so any reset calls to the HMD can reset to 0,0,0 relative to this component */
 	CameraComp->AttachTo(VROriginComp);
+
+
+	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
+	Mesh1P->SetOnlyOwnerSee(true);
+	Mesh1P->SetupAttachment(VROriginComp);
+	Mesh1P->RelativeRotation = FRotator(1.9f, -19.19f, 5.2f);
+	Mesh1P->RelativeLocation = FVector(-0.5f, -4.4f, -155.7f);
 
 	LeftHandComponent = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("LeftHand"));
 	LeftHandComponent->Hand = EControllerHand::Left;
@@ -37,7 +41,7 @@ AVRCharacter::AVRCharacter()
 void AVRCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	Mesh1P->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
 }
 
 // Called every frame
@@ -58,10 +62,7 @@ void AVRCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis("LookUp", this, &AVRCharacter::AddControllerPitchInput);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AVRCharacter::OnStartJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &AVRCharacter::OnStopJump);
-
 //	PlayerInputComponent->BindAction("ResetHMDOrigin", IE_Pressed, this, &AVRCharacter::ResetHMDOrigin);
-
-
 }
 
 void AVRCharacter::MoveForward(float Value)
@@ -101,8 +102,6 @@ void AVRCharacter::OnStopJump()
 {
 	bPressedJump = false;
 }
-
-
 
 //void AVRCharacter::ResetHMDOrigin()
 //{
