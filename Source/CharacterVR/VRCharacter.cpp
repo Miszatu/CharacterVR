@@ -10,6 +10,7 @@
 // Sets default values
 AVRCharacter::AVRCharacter()
 {
+	AutoPossessPlayer = EAutoReceiveInput::Player0;
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -23,13 +24,17 @@ AVRCharacter::AVRCharacter()
 	LeftHandComponent->Hand = EControllerHand::Left;
 	LeftHandComponent->Activate(true);
 	LeftHandComponent->SetupAttachment(VROriginComp);
-
-	L_Hand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("L_Hand"));
-	L_Hand->SetOnlyOwnerSee(true);
-	L_Hand->SetupAttachment(LeftHandComponent);
-	L_Hand->RelativeRotation = FRotator(0.0f, 0.0f, -90.0f);
-	L_Hand->RelativeScale3D = FVector(1.0f, -1.0f, 1.0f);
-	L_Hand->RelativeLocation = FVector(20.0f, 0.0f, 0.0f);
+	
+	
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> L_Hand (TEXT("SkeletalMesh'/Game/VirtualReality/Mannequin/Character/Mesh/MannequinHand_Right.MannequinHand_Right'"));
+//	L_Hand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("L_Hand"));
+	//L_Hand->SetSkeletalMesh(L_Hand);// SkeletalMesh'/Game/VirtualReality/Mannequin/Character/Mesh/MannequinHand_Right.MannequinHand_Right'");
+	//L_Hand->SetOnlyOwnerSee(true);
+	//L_Hand->SetupAttachment(LeftHandComponent);
+	//L_Hand->RelativeRotation = FRotator(0.0f, 0.0f, -90.0f);
+	//L_Hand->RelativeScale3D = FVector(1.0f, -1.0f, 1.0f);
+	//L_Hand->RelativeLocation = FVector(20.0f, 0.0f, 0.0f);
+	Hand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Hand"));
 
 	RightHandComponent = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("RightHand"));
 	RightHandComponent->Hand = EControllerHand::Right;
@@ -41,8 +46,10 @@ AVRCharacter::AVRCharacter()
 	R_Hand->SetupAttachment(RightHandComponent);
 	R_Hand->RelativeRotation = FRotator(0.0f, 0.0f, 90.0f);
 	R_Hand->RelativeLocation = FVector(20.0f, 0.0f, 0.0f);
-	FVector LeftPos = L_Hand->GetComponentLocation();
-	FVector RightPos = R_Hand->GetComponentLocation();
+
+
+//	FVector LeftPos = L_Hand->GetComponentLocation();
+//	FVector RightPos = R_Hand->GetComponentLocation();
 
 	bPositionalHeadTracking = false;
 }

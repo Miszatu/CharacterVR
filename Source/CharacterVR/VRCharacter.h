@@ -33,19 +33,23 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "VR")
 		bool bPositionalHeadTracking;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-		class USkeletalMeshComponent* R_Hand;
-
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-		class USkeletalMeshComponent* L_Hand;
-
 	/* Motion Controllers */
 
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 		class UMotionControllerComponent* LeftHandComponent;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Components)
 		class UMotionControllerComponent* RightHandComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+		class USkeletalMeshComponent* Hand;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+		class USkeletalMeshComponent* R_Hand;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh)
+		class USkeletalMeshComponent* L_Hand;
+
 
 public:	
 	// Called every frame

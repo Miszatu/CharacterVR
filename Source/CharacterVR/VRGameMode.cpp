@@ -8,7 +8,7 @@
 AVRGameMode::AVRGameMode(const FObjectInitializer& ObjectInitializer) : Super()
 {
 	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<ACharacter> PlayerPawnObject(TEXT("Blueprint'/Game/Blueprints/BP_VRCharacter.BP_VRCharacter'"));
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnObject(TEXT("Class'/Script/CharacterVR.VRCharacter'"));
 
 	if (PlayerPawnObject.Class != NULL)
 	{
