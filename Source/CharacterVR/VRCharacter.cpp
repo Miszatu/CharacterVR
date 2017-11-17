@@ -20,36 +20,33 @@ AVRCharacter::AVRCharacter()
 	/* Assign to the VR origin component so any reset calls to the HMD can reset to 0,0,0 relative to this component */
 	CameraComp->SetupAttachment(VROriginComp);
 
-	LeftHandComponent = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("LeftHand"));
-	LeftHandComponent->Hand = EControllerHand::Left;
-	LeftHandComponent->Activate(true);
+	// Motion Controllers
+	LeftHandComponent = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("L_MotionController"));
 	LeftHandComponent->SetupAttachment(VROriginComp);
-	
-	
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> L_Hand (TEXT("SkeletalMesh'/Game/VirtualReality/Mannequin/Character/Mesh/MannequinHand_Right.MannequinHand_Right'"));
-//	L_Hand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("L_Hand"));
-	//L_Hand->SetSkeletalMesh(L_Hand);// SkeletalMesh'/Game/VirtualReality/Mannequin/Character/Mesh/MannequinHand_Right.MannequinHand_Right'");
-	//L_Hand->SetOnlyOwnerSee(true);
-	//L_Hand->SetupAttachment(LeftHandComponent);
-	//L_Hand->RelativeRotation = FRotator(0.0f, 0.0f, -90.0f);
-	//L_Hand->RelativeScale3D = FVector(1.0f, -1.0f, 1.0f);
-	//L_Hand->RelativeLocation = FVector(20.0f, 0.0f, 0.0f);
-	Hand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Hand"));
+	LeftHandComponent->Hand = EControllerHand::Left;
 
-	RightHandComponent = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("RightHand"));
-	RightHandComponent->Hand = EControllerHand::Right;
-	RightHandComponent->Activate(true);
+	RightHandComponent = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("R_MotionController"));
 	RightHandComponent->SetupAttachment(VROriginComp);
+	RightHandComponent->Hand = EControllerHand::Right;
 
-	R_Hand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("R_Hand"));
-	R_Hand->SetOnlyOwnerSee(true);
+	L_Hand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("L_Hand_SkeletalMesh"));
+	L_Hand->SetupAttachment(LeftHandComponent);
+
+	R_Hand = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("R_Hand_SkeletalMesh"));
 	R_Hand->SetupAttachment(RightHandComponent);
-	R_Hand->RelativeRotation = FRotator(0.0f, 0.0f, 90.0f);
-	R_Hand->RelativeLocation = FVector(20.0f, 0.0f, 0.0f);
 
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> Skeletal_Hand_Asset(TEXT("SkeletalMesh'/Game/VirtualReality/Mannequin/Character/Mesh/MannequinHand_Right.MannequinHand_Right'"));
+	if (Skeletal_Hand_Asset.Succeeded())
+	{
+		L_Hand->SetSkeletalMesh(Skeletal_Hand_Asset.Object);
+		L_Hand->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+		L_Hand->SetRelativeRotation(FRotator(0.0f, 0.0f, -90.0f));
+		L_Hand->SetRelativeScale3D(FVector(1.0f, -1.0f, 1.0f));
 
-//	FVector LeftPos = L_Hand->GetComponentLocation();
-//	FVector RightPos = R_Hand->GetComponentLocation();
+		R_Hand->SetSkeletalMesh(Skeletal_Hand_Asset.Object);
+		R_Hand->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+		R_Hand->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
+	}
 
 	bPositionalHeadTracking = false;
 }
@@ -64,8 +61,6 @@ void AVRCharacter::BeginPlay()
 void AVRCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp, Log, TEXT("Left Position is %s"), *LeftPos.ToString());
-	UE_LOG(LogTemp, Log, TEXT("Right Position is %s"), *RightPos.ToString());
 }
 
 // Called to bind functionality to input
